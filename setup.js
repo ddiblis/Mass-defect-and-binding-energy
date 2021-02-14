@@ -1,20 +1,33 @@
-//Initially for helium, will add functionality for rest of the periodic table later
+import periodicTable from "./periodicTable"
 
-function calcMassDefect() {
-const atomicNumber = 2
+export function calcMassDefect(input) {
 
-const massNumber = 4
+  const { atomicNumber, actualMass } = periodicTable[input]
 
-const massOfProton = 1.00727647 // amU units
+  const AN = atomicNumber // number of Protons/Neutrons
 
-const massOfNeutron = 1.00866490 // amU units
+  const massOfProton = 1.00727647 // amU units
 
-const predictedMassOfNucleus = ( massOfProton * atomicNumber ) + ( massOfNeutron * massNumber )
+  const massOfNeutron = 1.00866490 // amU units
 
-const actualMassOfNucleus = 4.00150608 
+  const predictedMassOfNucleus = ( massOfProton * AN ) + ( massOfNeutron * AN ) // amU units
 
-const massDefect = predictedMassOfNucleus - actualMassOfNucleus
+  const actualMassOfNucleus = actualMass // amU units
+
+  const massDefect = predictedMassOfNucleus - actualMassOfNucleus
+
+  return massDefect
 }
 
+export function calcBindingEnergy(input) {
 
+  const kgAmu = 1.66054e-27 // 1 amu equals this amount
 
+  const mass = calcMassDefect(input) * kgAmu // convert mass to amu
+
+  const speedOfLight = Math.pow(2.99792e8, 2)
+
+  const energy = mass * speedOfLight // joules
+
+  return energy // energy released during forming of nucleus
+}
